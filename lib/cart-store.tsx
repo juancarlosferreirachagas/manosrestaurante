@@ -11,6 +11,7 @@ import {
 import type { CartLine } from "@/lib/whatsapp";
 
 const STORAGE_KEY = "manos-cart-v1";
+const EMPTY_CART: CartLine[] = [];
 
 type CartContextValue = {
   lines: CartLine[];
@@ -24,25 +25,29 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 const listeners = new Set<() => void>();
+let snapshot: CartLine[] = EMPTY_CART;
 
 function lineKey(itemId: string, note?: string) {
   return `${itemId}::${note ?? ""}`;
 }
 
 function loadLines(): CartLine[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") return EMPTY_CART;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
+    if (!raw) return EMPTY_CART;
     const parsed = JSON.parse(raw) as CartLine[];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed : EMPTY_CART;
   } catch {
-    return [];
+    return EMPTY_CART;
   }
 }
 
-function persistLines(lines: CartLine[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
+function setSnapshot(lines: CartLine[]) {
+  snapshot = lines;
+}
+
+function emitChange() {
   listeners.forEach((listener) => listener());
 }
 
@@ -52,19 +57,33 @@ function subscribe(listener: () => void) {
 }
 
 function getSnapshot() {
-  return loadLines();
+  return snapshot;
 }
 
 function getServerSnapshot() {
-  return [] as CartLine[];
+  return EMPTY_CART;
+}
+
+function persistLines(lines: CartLine[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
+  setSnapshot(lines);
+  emitChange();
+}
+
+function ensureClientSnapshot() {
+  if (typeof window !== "undefined" && snapshot === EMPTY_CART) {
+    setSnapshot(loadLines());
+  }
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  ensureClientSnapshot();
+
   const lines = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const addItem = useCallback(
     (line: Omit<CartLine, "itemId"> & { itemId: string }) => {
-      const current = loadLines();
+      const current = getSnapshot();
       const key = lineKey(line.itemId, line.note);
       const existingIndex = current.findIndex(
         (entry) => lineKey(entry.itemId, entry.note) === key,
@@ -89,7 +108,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const removeItem = useCallback((itemId: string, note?: string) => {
     const key = lineKey(itemId, note);
     persistLines(
-      loadLines().filter(
+      getSnapshot().filter(
         (entry) => lineKey(entry.itemId, entry.note) !== key,
       ),
     );
@@ -100,7 +119,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const key = lineKey(itemId, note);
       if (quantity <= 0) {
         persistLines(
-          loadLines().filter(
+          getSnapshot().filter(
             (entry) => lineKey(entry.itemId, entry.note) !== key,
           ),
         );
@@ -108,7 +127,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
 
       persistLines(
-        loadLines().map((entry) =>
+        getSnapshot().map((entry) =>
           lineKey(entry.itemId, entry.note) === key
             ? { ...entry, quantity }
             : entry,
@@ -118,7 +137,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  const clearCart = useCallback(() => persistLines([]), []);
+  const clearCart = useCallback(() => persistLines(EMPTY_CART), []);
 
   const itemCount = useMemo(
     () => lines.reduce((sum, line) => sum + line.quantity, 0),
