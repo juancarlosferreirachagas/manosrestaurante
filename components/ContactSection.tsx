@@ -13,7 +13,7 @@ export function ContactSection() {
   const whatsappReady = hasWhatsApp();
 
   return (
-    <section id="contato" className="py-20">
+    <section id="contato" className="py-12 md:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="max-w-2xl">
           <p className="text-xs uppercase tracking-[0.3em] text-muted">
@@ -34,7 +34,7 @@ export function ContactSection() {
             <p className="mt-2 text-sm text-muted">
               {whatsappReady
                 ? `+${whatsappNumber?.replace(/(\d{2})(\d{2})(\d{5})(\d{4})/, "$1 $2 $3-$4")}`
-                : "Configure NEXT_PUBLIC_WHATSAPP no .env"}
+                : "Pergunte no balcão ou peça pelo iFood."}
             </p>
           </div>
 

@@ -50,7 +50,7 @@ export function MenuSection() {
         }
       },
       {
-        rootMargin: "-28% 0px -55% 0px",
+        rootMargin: "-20% 0px -60% 0px",
         threshold: [0.1, 0.3, 0.6],
       },
     );
@@ -67,7 +67,7 @@ export function MenuSection() {
     setActiveCategory(categoryId);
     const element = sectionRefs.current[categoryId];
     if (element) {
-      const top = element.getBoundingClientRect().top + window.scrollY - 132;
+      const top = element.getBoundingClientRect().top + window.scrollY - 108;
       window.scrollTo({ top, behavior: "smooth" });
     }
   };
@@ -78,41 +78,41 @@ export function MenuSection() {
   };
 
   return (
-    <section id="cardapio" className="py-20 pb-28">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="max-w-2xl">
+    <section id="cardapio" className="pb-20 pt-2 md:pb-28 md:pt-0 md:py-20">
+      <div className="mx-auto max-w-6xl px-3 sm:px-6">
+        <div className="hidden max-w-2xl md:block">
           <p className="text-xs uppercase tracking-[0.3em] text-muted">
             Cardápio
           </p>
-          <h2 className="mt-4 font-display text-4xl text-charcoal sm:text-5xl">
+          <h2 className="mt-4 font-display text-5xl text-charcoal">
             {siteCopy.menu.title}
           </h2>
           <p className="mt-4 text-lg text-muted">{siteCopy.menu.subtitle}</p>
         </div>
 
-        <div className="relative mt-10">
-          <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
+        <div className="relative md:mt-10">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder={siteCopy.menu.searchPlaceholder}
-            className="h-12 w-full rounded-full border border-border bg-surface pl-11 pr-4 text-sm outline-none transition focus:border-accent/40"
+            className="h-11 w-full rounded-full border border-border bg-surface pl-10 pr-4 text-sm outline-none transition focus:border-accent/40"
           />
         </div>
 
         <div
           ref={pillsRef}
-          className="sticky top-16 z-20 -mx-4 mt-8 overflow-x-auto border-b border-border bg-cream/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6"
+          className="sticky top-12 z-20 -mx-3 mt-2 overflow-x-auto border-b border-border bg-cream/95 px-3 py-2 backdrop-blur-md sm:-mx-6 sm:px-6 md:top-16 md:mt-8 md:py-3"
         >
-          <div className="flex min-w-max gap-2">
+          <div className="flex min-w-max gap-1.5 md:gap-2">
             {filteredCategories.map((category) => (
               <button
                 key={category.id}
                 type="button"
                 onClick={() => scrollToCategory(category.id)}
                 className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition",
+                  "rounded-full px-3.5 py-1.5 text-xs font-medium transition md:px-4 md:py-2 md:text-sm",
                   resolvedActiveCategory === category.id
                     ? "bg-charcoal text-white"
                     : "bg-surface text-charcoal/80 hover:text-charcoal",
@@ -124,9 +124,11 @@ export function MenuSection() {
           </div>
         </div>
 
-        <div className="mt-10 space-y-14">
+        <div className="mt-4 space-y-8 md:mt-10 md:space-y-14">
           {filteredCategories.length === 0 ? (
-            <p className="text-center text-muted">{siteCopy.menu.emptySearch}</p>
+            <p className="text-center text-sm text-muted">
+              {siteCopy.menu.emptySearch}
+            </p>
           ) : (
             filteredCategories.map((category) => (
               <section
@@ -135,14 +137,14 @@ export function MenuSection() {
                 ref={(element) => {
                   sectionRefs.current[category.id] = element;
                 }}
-                className="scroll-mt-36"
+                className="scroll-mt-28 md:scroll-mt-36"
               >
-                <div className="mb-6">
-                  <h3 className="font-display text-3xl text-charcoal">
+                <div className="mb-3 md:mb-6">
+                  <h3 className="font-display text-2xl text-charcoal md:text-3xl">
                     {category.name}
                   </h3>
                   {category.description ? (
-                    <p className="mt-2 text-sm text-muted">
+                    <p className="mt-1 hidden text-sm text-muted md:block">
                       {category.description}
                     </p>
                   ) : null}
@@ -154,35 +156,35 @@ export function MenuSection() {
                       <button
                         type="button"
                         onClick={() => openItem(item)}
-                        className="group flex w-full items-start justify-between gap-4 py-5 text-left transition hover:bg-surface/70"
+                        className="group flex w-full items-center justify-between gap-3 py-3 text-left transition active:bg-surface/70 md:items-start md:gap-4 md:py-4"
                       >
                         {item.imageUrl ? (
-                          <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-2xl border border-border bg-cream">
+                          <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-border bg-cream md:h-20 md:w-20 md:rounded-2xl">
                             <Image
                               src={item.imageUrl}
                               alt={item.name}
                               fill
-                              className="object-cover transition duration-300 group-hover:scale-105"
-                              sizes="80px"
+                              className="object-cover"
+                              sizes="72px"
                             />
                           </div>
                         ) : null}
                         <div className="min-w-0 flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-medium text-charcoal transition group-hover:text-accent">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="text-sm font-semibold text-charcoal transition group-hover:text-accent md:text-base md:font-medium">
                               {item.name}
                             </span>
                             {item.popular ? (
-                              <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent">
+                              <span className="rounded-full bg-accent/10 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-accent">
                                 Destaque
                               </span>
                             ) : null}
                           </div>
-                          <p className="mt-1 text-sm leading-relaxed text-muted">
+                          <p className="mt-0.5 line-clamp-2 text-xs leading-snug text-muted md:mt-1 md:text-sm md:leading-relaxed">
                             {item.description}
                           </p>
                         </div>
-                        <span className="shrink-0 text-sm font-semibold text-charcoal">
+                        <span className="shrink-0 text-sm font-bold text-charcoal md:font-semibold">
                           {formatPrice(item.priceInCents)}
                         </span>
                       </button>

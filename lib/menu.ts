@@ -15,8 +15,7 @@ export type MenuCategory = {
   items: MenuItem[];
 };
 
-const img = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=600&q=80`;
+const menuImage = (slug: string) => `/menu/${slug}.jpg`;
 
 export const menuCategories: MenuCategory[] = [
   {
@@ -29,7 +28,7 @@ export const menuCategories: MenuCategory[] = [
         name: "Marmitex grande (900g)",
         description: "Serve duas pessoas. Arroz, feijão, salada e proteína do dia.",
         priceInCents: 3290,
-        imageUrl: img("1546069901-ba9599a7e63c"),
+        imageUrl: menuImage("marmitex-grande"),
         popular: true,
         tags: ["caseiro"],
       },
@@ -38,14 +37,14 @@ export const menuCategories: MenuCategory[] = [
         name: "Marmitex médio",
         description: "Porção individual com arroz, feijão e acompanhamentos.",
         priceInCents: 2490,
-        imageUrl: img("1546833999-b4f4a389df41"),
+        imageUrl: menuImage("marmitex-medio"),
       },
       {
         id: "feijoada",
         name: "Feijoada completa",
         description: "Arroz, couve, farofa, laranja e torresmo.",
         priceInCents: 3890,
-        imageUrl: img("1512058564366-31410b017e85"),
+        imageUrl: menuImage("feijoada"),
         popular: true,
       },
       {
@@ -53,7 +52,7 @@ export const menuCategories: MenuCategory[] = [
         name: "Strogonoff de frango",
         description: "Arroz branco e batata palha crocante.",
         priceInCents: 2990,
-        imageUrl: img("1632774946440-2615d2b74d0c"),
+        imageUrl: menuImage("strogonoff-frango"),
       },
     ],
   },
@@ -67,14 +66,14 @@ export const menuCategories: MenuCategory[] = [
         name: "Frango grelhado",
         description: "Peito temperado, arroz, feijão e salada.",
         priceInCents: 2790,
-        imageUrl: img("1598103447897-25b3817fb1f3"),
+        imageUrl: menuImage("frango-grelhado"),
       },
       {
         id: "bife-acebolado",
         name: "Bife acebolado",
         description: "Com arroz, feijão tropeiro e batata frita.",
         priceInCents: 3290,
-        imageUrl: img("1558030006-450675393462"),
+        imageUrl: menuImage("bife-acebolado"),
         popular: true,
       },
       {
@@ -82,7 +81,7 @@ export const menuCategories: MenuCategory[] = [
         name: "Calabresa acebolada",
         description: "Na chapa, com pão de alho opcional.",
         priceInCents: 3490,
-        imageUrl: img("1529042410757-b6d8a4c366d4"),
+        imageUrl: menuImage("calabresa-acebolada"),
       },
     ],
   },
@@ -96,7 +95,7 @@ export const menuCategories: MenuCategory[] = [
         name: "X-Tudo",
         description: "Hambúrguer, queijo, presunto, ovo, salada e molho da casa.",
         priceInCents: 2490,
-        imageUrl: img("1568908519248-5279bdb039a5"),
+        imageUrl: menuImage("x-tudo"),
         popular: true,
       },
       {
@@ -104,14 +103,14 @@ export const menuCategories: MenuCategory[] = [
         name: "Misto quente",
         description: "Pão, presunto e queijo na chapa.",
         priceInCents: 1490,
-        imageUrl: img("1528735602780-2552fd46c7af"),
+        imageUrl: menuImage("misto-quente"),
       },
       {
         id: "hot-dog-completo",
         name: "Hot dog completo",
         description: "Purê, milho, batata palha e molhos.",
         priceInCents: 1790,
-        imageUrl: img("1612392062631-94c5b1a7d6e3"),
+        imageUrl: menuImage("hot-dog-completo"),
       },
     ],
   },
@@ -125,21 +124,21 @@ export const menuCategories: MenuCategory[] = [
         name: "Suco natural",
         description: "Laranja, limão ou abacaxi — 500 ml.",
         priceInCents: 1290,
-        imageUrl: img("1621506286607-9c3ea4c8753b"),
+        imageUrl: menuImage("suco-natural"),
       },
       {
         id: "refrigerante-lata",
         name: "Refrigerante lata",
         description: "350 ml — consulte sabores no balcão.",
         priceInCents: 790,
-        imageUrl: img("1629203851127-3726ecdf080e"),
+        imageUrl: menuImage("refrigerante-lata"),
       },
       {
         id: "agua-mineral",
         name: "Água mineral",
         description: "500 ml, com ou sem gás.",
         priceInCents: 590,
-        imageUrl: img("1548839140-29a751e1d231"),
+        imageUrl: menuImage("agua-mineral"),
       },
     ],
   },
@@ -153,7 +152,7 @@ export const menuCategories: MenuCategory[] = [
         name: "Pudim de leite",
         description: "Fatia generosa, calda de caramelo.",
         priceInCents: 1290,
-        imageUrl: img("1587314163834-6a1e23d4b1c1"),
+        imageUrl: menuImage("pudim"),
         popular: true,
       },
       {
@@ -161,7 +160,7 @@ export const menuCategories: MenuCategory[] = [
         name: "Mousse de maracujá",
         description: "Leve e refrescante.",
         priceInCents: 1190,
-        imageUrl: img("1488477181946-6428a0291777"),
+        imageUrl: menuImage("mousse-maracuja"),
       },
     ],
   },
